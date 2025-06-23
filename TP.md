@@ -1,7 +1,6 @@
-Créer deux classes python, une classe SimpleMath contenant une fonction statique
-“addition” prenant deux arguments. Et une classe TestSimpleMath qui hérite de
-unittest.TestCase et contient une fonction de test unitaire.
+## Créer deux classes python, une classe SimpleMath contenant une fonction statique “addition” prenant deux arguments. Et une classe TestSimpleMath qui hérite de unittest.TestCase et contient une fonction de test unitaire.
 
+```
 import unittest
 
 class SimpleMath:
@@ -24,16 +23,40 @@ class TestSimpleMath(unittest.TestCase):
 # Pour lancer le test
 if __name__ == '__main__':
     unittest.main()
+```
 
-4. Pousser votre code sur un nouveau repository Github et avec Github Actions créer
-un workflow permettant de lancer les tests unitaires de votre application.
+## Pousser votre code sur un nouveau repository Github et avec Github Actions créer un workflow permettant de lancer les tests unitaires de votre application.
 
-5. Créer la fonction soustraction et le test associé. Puis, pousser votre commit. Les
-tests sont effectués automatiquement via la pipeline.
+.github/workflows/simplemaths-tests.yml
 
-6. Ajouter une étape de lint (validation statique et syntaxique de votre code source)
-dans votre workflow. Utiliser pylint.
+```
+name: Run SimpleMath Unit Tests
 
-7. Ajouter une étape qui build un conteneur Docker embarquant votre application. La
-directive CMD de votre Dockerfile doit exécuter les tests unitaires dès le run d’un
-nouveau conteneur à partir de cette image
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Run unit tests
+      run: |
+        python -m unittest Scriptpython
+```
+
+## Créer la fonction soustraction et le test associé. Puis, pousser votre commit. Les tests sont effectués automatiquement via la pipeline.
+
+## Ajouter une étape de lint (validation statique et syntaxique de votre code source) dans votre workflow. Utiliser pylint.
+
+## Ajouter une étape qui build un conteneur Docker embarquant votre application. La directive CMD de votre Dockerfile doit exécuter les tests unitaires dès le run d’un nouveau conteneur à partir de cette image
