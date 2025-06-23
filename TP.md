@@ -1,4 +1,4 @@
-### Créer deux classes python, une classe SimpleMath contenant une fonction statique “addition” prenant deux arguments. Et une classe TestSimpleMath qui hérite de unittest.TestCase et contient une fonction de test unitaire.
+#### Créer deux classes python, une classe SimpleMath contenant une fonction statique “addition” prenant deux arguments. Et une classe TestSimpleMath qui hérite de unittest.TestCase et contient une fonction de test unitaire.
 
 ```
 import unittest
@@ -25,9 +25,9 @@ if __name__ == '__main__':
     unittest.main()
 ```
 
-### Pousser votre code sur un nouveau repository Github et avec Github Actions créer un workflow permettant de lancer les tests unitaires de votre application.
+#### Pousser votre code sur un nouveau repository Github et avec Github Actions créer un workflow permettant de lancer les tests unitaires de votre application.
 
-.github/workflows/simplemaths-tests.yml
+On crée le fichier `.github/workflows/simplemaths-tests.yml`
 
 ```
 name: Run SimpleMath Unit Tests
@@ -55,7 +55,7 @@ jobs:
         python -m unittest Scriptpython
 ```
 
-### Créer la fonction soustraction et le test associé. Puis, pousser votre commit. Les tests sont effectués automatiquement via la pipeline.
+#### Créer la fonction soustraction et le test associé. Puis, pousser votre commit. Les tests sont effectués automatiquement via la pipeline.
 
 On ajoute la fonction `soustraction`:
 
@@ -78,5 +78,19 @@ def test_soustraction(self):
 ```
 
 
-### Ajouter une étape de lint (validation statique et syntaxique de votre code source) dans votre workflow. Utiliser pylint.
-### Ajouter une étape qui build un conteneur Docker embarquant votre application. La directive CMD de votre Dockerfile doit exécuter les tests unitaires dès le run d’un nouveau conteneur à partir de cette image
+#### Ajouter une étape de lint (validation statique et syntaxique de votre code source) dans votre workflow. Utiliser pylint.
+
+On ajoute ces lignes à notre `simplemaths-tests.yml`
+
+```
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pylint
+
+    - name: Lint with pylint
+      run: |
+        pylint sriptpython.py
+```
+
+#### Ajouter une étape qui build un conteneur Docker embarquant votre application. La directive CMD de votre Dockerfile doit exécuter les tests unitaires dès le run d’un nouveau conteneur à partir de cette image
