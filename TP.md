@@ -94,3 +94,50 @@ On ajoute ces lignes à notre `simplemaths-tests.yml`
 ```
 
 #### Ajouter une étape qui build un conteneur Docker embarquant votre application. La directive CMD de votre Dockerfile doit exécuter les tests unitaires dès le run d’un nouveau conteneur à partir de cette image
+
+On crée le `Dockerfile`:
+```
+FROM python:3.11-slim
+WORKDIR /app
+COPY Scriptpython.py .
+RUN python -m pip install --upgrade pip
+RUN pip install pylint
+RUN python -m unittest Scriptpython
+RUN pylint Scriptpython.py
+```
+
+Et on crée le github action `simplemaths-tests-docker.yml`: 
+
+```
+name: SimpleMath Tests On Docker
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  docker-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Build Docker image
+      run: |
+        docker build -t simplemath-test .
+
+    - name: Run tests inside Docker container
+      run: |
+        docker run --rm simplemath-test
+```
+
+
+
+
