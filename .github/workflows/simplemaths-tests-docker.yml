@@ -1,0 +1,27 @@
+name: SimpleMath Tests On Docker
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  docker-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Build Docker image
+      run: |
+        docker build -t simplemath-test .
+
+    - name: Run tests inside Docker container
+      run: |
+        docker run --rm simplemath-test
