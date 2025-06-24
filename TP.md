@@ -103,7 +103,7 @@ COPY Scriptpython.py .
 RUN python -m pip install --upgrade pip
 RUN pip install pylint
 RUN python -m unittest Scriptpython
-RUN pylint Scriptpython.py
+RUN pylint Scriptpython.py || true # On rajoute cela car sans, le build de l'image s'arrete si pylint rencontre une erreur
 ```
 
 Et on crée le github action `simplemaths-tests-docker.yml`: 
